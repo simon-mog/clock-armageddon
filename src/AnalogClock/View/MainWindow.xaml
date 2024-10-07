@@ -26,9 +26,15 @@
     <Window.Resources>
         <!-- 時計の直径 -->
         <system:Double x:Key="ClockSize">200</system:Double>
+        
+        <!-- 秒刻み背景の座標計算用。xamlに直書きするのでリソースとしては使っていない。 -->
+        <!-- tan(π/(2*15))*(ClockSize/2) -->
+        <system:Double x:Key="HalfClockSizeXTanPiOver30">10.51042352</system:Double>
+        <!-- 360/60 (1秒の角度) -->
+        <system:Double x:Key="AnglePerSecond">6</system:Double>
 
         <!-- 数字 -->
-        <Style x:Key="NumberTextBlock" TargetType="TextBlock">
+        <Style x:Key="NumberTextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Center"/>
@@ -38,12 +44,13 @@
         </Style>
 
         <!-- 時計全体の形 -->
-        <Style x:Key="ClockFrameBorder" TargetType="Border">
+        <Style x:Key="ClockFrameBorder" TargetType="{x:Type Border}">
+            <!-- 時計のサイズと同等の -->
             <Setter Property="Width" Value="{StaticResource ClockSize}"/>
             <Setter Property="Height" Value="{StaticResource ClockSize}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="CornerRadius" Value="100"/> <!-- 2倍してClockSize以上の値になれば円形 -->
             <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
             <Setter Property="BorderBrush">
@@ -65,32 +72,61 @@
         </Style>
 
         <!-- 秒目盛りの基本形 -->
-        <Style x:Key="SecondScaleRectangle" TargetType="Rectangle">
+        <Style x:Key="SecondScaleRectangle" TargetType="{x:Type Rectangle}">
             <Setter Property="Width" Value="{Binding Path=SecondScaleSize.Width}"/>
             <Setter Property="Height" Value="{Binding Path=SecondScaleSize.Height}"/>
             <Setter Property="Fill" Value="Black"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
         </Style>
-        <Style x:Key="SecondScaleRectangle5" TargetType="Rectangle" BasedOn="{StaticResource SecondScaleRectangle}">
+        <Style x:Key="SecondScaleRectangle5" TargetType="{x:Type Rectangle}" BasedOn="{StaticResource SecondScaleRectangle}">
             <Setter Property="Width" Value="{Binding Path=SecondScaleSize5.Width}"/>
             <Setter Property="Height" Value="{Binding Path=SecondScaleSize5.Height}"/>
         </Style>
-
+        
+        <!-- 残時間刻み背景のスタイル -->
+        <Style x:Key="SecondBackground" TargetType="{x:Type Path}">
+            <Setter Property="Fill" Value="#80FFFF00"/>
+            <Setter Property="StrokeThickness" Value="0"/>
+            <Setter Property="Data" Value="M 99,0 99,99 109.51042352,0 Z"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/> <!-- 0～1秒の範囲の三角形を初期位置とするので、時計の中心(0.5,0.5)を基準に回転する -->
+        </Style>
+        
+        <!-- 透過トグルボタンのスタイル -->
+        <Style x:Key="TransparentToggleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="1">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="FALSE">
+                    <Setter Property="Background" Value="#D8DDDDDD"/>
+                    <Setter Property="Foreground" Value="#D8000000"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="TRUE">
+                    <Setter Property="Background" Value="#D8232323"/>
+                    <Setter Property="Foreground" Value="#D8F8F8F8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <!-- コンテキストメニュー -->
     <Window.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Close" Command="{Binding Path=ClosingCommand}"/>
+            <MenuItem Header="ヘルプ" Command="{Binding Path=ShowHelp}"/>
+            <MenuItem Header="作成者" Command="{Binding Path=ShowCreator}"/>
+            <MenuItem Header="終了" Command="{Binding Path=ClosingCommand}"/>
         </ContextMenu>
     </Window.ContextMenu>
-
-    <!-- Windowのイベントトリガー -->
-    <!--<Interactivity:Interaction.Triggers>
-        <Interactivity:EventTrigger EventName="MouseWheel">
-            <Core:CallMethodAction TargetObject="{Binding .}" MethodName="MouseScrollEvent"/>
-        </Interactivity:EventTrigger>
-    </Interactivity:Interaction.Triggers>-->
 
     <!-- Windowのコンテンツ -->
     <Grid x:Name="MainGrid" RenderTransformOrigin="0.5,0.5">
@@ -120,6 +156,68 @@
         <!-- 文字盤 -->
         <Border Style="{StaticResource ClockFrameBorder}">
             <Grid>
+                <!-- 魔界殲滅戦争モード：残時間刻み背景 -->
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="  0"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="  6"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 12"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 18"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 24"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 30"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 36"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 42"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 48"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 54"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 60"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 66"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 72"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 78"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 84"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 90"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 96"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="102"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="108"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="114"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="120"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="126"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="132"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="138"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="144"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="150"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="156"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="162"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="168"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="174"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="180"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="186"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="192"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="198"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="204"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="210"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="216"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="222"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="228"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="234"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="240"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="246"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="252"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="258"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="264"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="270"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="276"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="282"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="288"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="294"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="300"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="306"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="312"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="318"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="324"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="330"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="336"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="342"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="348"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="354"/></TransformGroup></Path.RenderTransform></Path>
+
                 <!-- 秒目盛り描画 -->
                 <Rectangle Style="{StaticResource SecondScaleRectangle5}"><Rectangle.RenderTransform><TransformGroup><TranslateTransform Y="{Binding Path=SecondScalePositionOffset5.Y}"/><RotateTransform Angle="{Binding Path=SecondScaleAngleArray[ 0]}"/></TransformGroup></Rectangle.RenderTransform></Rectangle>
                 <Rectangle Style="{StaticResource SecondScaleRectangle }"><Rectangle.RenderTransform><TransformGroup><TranslateTransform Y="{Binding Path=SecondScalePositionOffset.Y }"/><RotateTransform Angle="{Binding Path=SecondScaleAngleArray[ 1]}"/></TransformGroup></Rectangle.RenderTransform></Rectangle>
@@ -280,14 +378,17 @@
                     </TextBlock.RenderTransform>
                 </TextBlock>
 
-                <!-- 中心 -->
-                <!--<Ellipse Width="5" Height="5" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black"/>-->
 
                 <!-- 秒針 -->
                 <Rectangle Width="{Binding Path=SecondHandSize.Width}"
                            Height="{Binding Path=SecondHandSize.Height}"
                            Fill="Black"
                            RenderTransformOrigin="0.5,0.9">
+                    <!--
+                    Rectangle.RenderTransformOrigin
+                        0.5：細い方の中央
+                        0.9：長い方の9割の位置
+                    -->
                     <Rectangle.RenderTransform>
                         <TransformGroup>
                             <RotateTransform Angle="{Binding Path=SecondHandAngle}"/>
@@ -322,6 +423,31 @@
                     </Rectangle.RenderTransform>
                 </Rectangle>
 
+                <!-- ハルマゲドンボタン -->
+                <ToggleButton Style="{StaticResource TransparentToggleButton}"
+                              Content="ハルマゲドン"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Cursor="Arrow"
+                              Command="{Binding Path=ArmageddonButtonCommand}"/>
+                
+                <!-- ハルマゲドンモード時の表示 -->
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="#90FFFFFF"
+                            Visibility="{Binding ArmageddonModeVisibility}">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="27"/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <TextBlock Text="クールタイム終了時刻"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Path=CoolDownEndTime}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>

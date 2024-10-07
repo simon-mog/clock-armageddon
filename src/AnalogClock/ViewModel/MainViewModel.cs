@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Windows.Media;
 
 namespace AnalogClock.ViewModel
 {
@@ -105,11 +106,11 @@ namespace AnalogClock.ViewModel
         /// 【Binding用プロパティ】
         /// 時計半径
         /// </summary>
-        private double _radius = ConstantData.ORIGINAL_CLOCK_LENGTH / 2;
-        public double Radius
+        private double _clockBoardRadius = ConstantData.ORIGINAL_CLOCK_LENGTH / 2;
+        public double ClockBoardRadius
         {
-            get { return _radius; }
-            set { SetProperty(ref _radius, value); }
+            get { return _clockBoardRadius; }
+            set { SetProperty(ref _clockBoardRadius, value); }
         }
 
         /// <summary>
@@ -178,6 +179,7 @@ namespace AnalogClock.ViewModel
         /// </summary>
         public double SecondHandYOffset
         {
+            /// 上方向に、秒針の長さの4割の長さだけ移動
             get { return -this.SecondHandSize.Height * 0.4; }
         }
 
@@ -197,6 +199,24 @@ namespace AnalogClock.ViewModel
         public double HourHandYOffset
         {
             get { return -this.HourHandSize.Height * 0.4; }
+        }
+
+        /// <summary>
+        /// 【Binding用プロパティ】
+        /// ハルマゲドンモード時の表示状態
+        /// </summary>
+        public Visibility ArmageddonModeVisibility
+        {
+            get { return (this.armageddonMode ? Visibility.Visible : Visibility.Hidden); }
+        }
+
+        /// <summary>
+        /// 【Binding用プロパティ】
+        /// ハルマゲドンのクールダウンタイム終了時刻
+        /// </summary>
+        public string CoolDownEndTime
+        {
+            get { return armageddonCoolDownEndTime.ToString("HH:mm:ss"); }
         }
 
         #endregion
@@ -229,6 +249,80 @@ namespace AnalogClock.ViewModel
             }
         }
 
+        /// <summary>
+        /// 【Binding用コマンド】
+        /// ヘルプを表示する
+        /// </summary>
+        public ICommand ShowHelp
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    MessageBox.Show(
+                        ConstantData.HELP_MESSAGE,
+                        "ヘルプ",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                });
+            }
+        }
+
+        /// <summary>
+        /// 【Binding用コマンド】
+        /// 作成者情報を表示する
+        /// </summary>
+        public ICommand ShowCreator
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    MessageBox.Show(
+                        ConstantData.CREATOR_INFO,
+                        "作成者について",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                });
+            }
+        }
+
+        /// <summary>
+        /// 【Binding用コマンド】
+        /// ハルマゲドンモードのオン・オフを切り替える
+        /// </summary>
+        public ICommand ArmageddonButtonCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    if (this.armageddonMode)
+                    {
+                        // ハルマゲドンモードを解除したい
+                        MessageBoxResult mbResult = MessageBox.Show(
+                            "ハルマゲドンモードを解除しますか？",
+                            "ハルマゲドンモード解除の確認",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question);
+                        if (mbResult == MessageBoxResult.Yes)
+                        {
+                            this.armageddonMode = false;
+                        }
+                    }
+                    else
+                    {
+                        // ハルマゲドンモードにする
+                        MessageBox.Show("魔界殲滅戦争！");
+                        this.armageddonCoolDownEndTime = DateTime.Now.AddSeconds(ConstantData.COOL_DOWN_TIME_SECOND);
+                        this.armageddonMode = true;
+                        RaisePropertyChanged(nameof(CoolDownEndTime));
+                    }
+                    RaisePropertyChanged(nameof(ArmageddonModeVisibility));
+                });
+            }
+        }
+
         // Binding用のプロパティ・コマンドは以上。
 
         #endregion
@@ -237,6 +331,18 @@ namespace AnalogClock.ViewModel
         /// 時刻更新監視タイマー
         /// </summary>
         private DispatcherTimer timeUpdatingTimer;
+
+        /// <summary>
+        /// 魔界殲滅戦争モード
+        /// true: オン
+        /// false: オフ
+        /// </summary>
+        private bool armageddonMode = false;
+
+        /// <summary>
+        /// クールダウンが終わる時刻
+        /// </summary>
+        private DateTime armageddonCoolDownEndTime;
 
         /// <summary>
         /// コンストラクタ
@@ -251,9 +357,10 @@ namespace AnalogClock.ViewModel
             this.timeUpdatingTimer.Interval = TimeSpan.FromMilliseconds(200);
             this.timeUpdatingTimer.Tick += (object sender, EventArgs e) =>
             {
-                RaisePropertyChanged("HourHandAngle");
-                RaisePropertyChanged("MinuteHandAngle");
-                RaisePropertyChanged("SecondHandAngle");
+                RaisePropertyChanged(nameof(HourHandAngle));
+                RaisePropertyChanged(nameof(MinuteHandAngle));
+                RaisePropertyChanged(nameof(SecondHandAngle));
+                RaisePropertyChanged(nameof(CoolDownEndTime));
             };
             this.timeUpdatingTimer.Start();
 
@@ -286,13 +393,13 @@ namespace AnalogClock.ViewModel
             /// 文字盤の数字を示すテキストブロックの位置を調整する。初期位置は文字盤の中心になっている。
             for (int i = 0; i < 12; i++)
             {
-                this.NumberPositionOffsetArray[i].X =  Math.Sin((i + 1) * PI_OVER_6) * (this.Radius - ConstantData.ORIGINAL_NUMBER_FONT_SIZE) * NUMBER_POSITION_RATE;
-                this.NumberPositionOffsetArray[i].Y = -Math.Cos((i + 1) * PI_OVER_6) * (this.Radius - ConstantData.ORIGINAL_NUMBER_FONT_SIZE) * NUMBER_POSITION_RATE;
+                this.NumberPositionOffsetArray[i].X =  Math.Sin((i + 1) * PI_OVER_6) * (this.ClockBoardRadius - ConstantData.ORIGINAL_NUMBER_FONT_SIZE) * NUMBER_POSITION_RATE;
+                this.NumberPositionOffsetArray[i].Y = -Math.Cos((i + 1) * PI_OVER_6) * (this.ClockBoardRadius - ConstantData.ORIGINAL_NUMBER_FONT_SIZE) * NUMBER_POSITION_RATE;
             }
 
             /// 秒目盛りオフセット位置設定
-            SecondScalePositionOffset = new Point(0, -(this.Radius - ConstantData.ORIGINAL_SECOND_SCALE_LENGTH / 2.0));
-            SecondScalePositionOffset5 = new Point(0, -(this.Radius - ConstantData.ORIGINAL_SECOND_SCALE_LENGTH * ConstantData.ORIGINAL_5SECOND_SCALE_SIZE_RATE / 2.0));
+            SecondScalePositionOffset = new Point(0, -(this.ClockBoardRadius - ConstantData.ORIGINAL_SECOND_SCALE_LENGTH / 2.0));
+            SecondScalePositionOffset5 = new Point(0, -(this.ClockBoardRadius - ConstantData.ORIGINAL_SECOND_SCALE_LENGTH * ConstantData.ORIGINAL_5SECOND_SCALE_SIZE_RATE / 2.0));
             /// 秒目盛り角度設定
             for (int i = 0; i < 60; i++)
             {

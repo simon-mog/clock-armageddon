@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace AnalogClock.Resource
 {
@@ -73,5 +74,29 @@ namespace AnalogClock.Resource
         /// 5の倍数の秒目盛りのサイズ比率
         /// </summary>
         public static readonly double ORIGINAL_5SECOND_SCALE_SIZE_RATE = 1.6;
+
+        /// <summary>
+        /// ハルマゲドンのクールダウンタイム(秒)
+        /// </summary>
+        public static readonly double COOL_DOWN_TIME_SECOND = 4 * 60 + 55;
+
+        /// <summary>
+        /// ヘルプの表示文字列
+        /// </summary>
+        public static readonly string HELP_MESSAGE = "・ハルマゲドンボタン\n" +
+            "　・押すととハルマゲドンモードになる\n" +
+            "　・ハルマゲドンモードのときに押すとハルマゲドンモードを解除する\n" +
+            "\n" +
+            "・ハルマゲドンモード\n" +
+            "　・4分55秒間隔でタイマーが走る\n" +
+            "　・終了1分前になると文字盤の色が変わる\n" +
+            "　・ハルマゲドンボタンが濃ければハルマゲドンモード\n" +
+            "\n" + 
+            "商用利用、二次配布を禁止します";
+
+        /// <summary>
+        /// 作成者情報
+        /// </summary>
+        internal static readonly string CREATOR_INFO = "Xアカウント: @SimonKagemasu";
     }
 }
