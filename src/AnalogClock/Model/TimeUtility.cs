@@ -21,7 +21,7 @@ namespace AnalogClock.Model
         private const int MAX_HOUR = MAX_MINUTE * 12;
 
         /// <summary>
-        /// 現在時刻を取得する
+        /// 現在時刻を 時 分 秒 で取得する
         /// </summary>
         /// <param name="hour">[out]現在時</param>
         /// <param name="minute">[out]現在分</param>
@@ -32,6 +32,16 @@ namespace AnalogClock.Model
             hour = nowTime.Hour;
             minute = nowTime.Minute;
             second = nowTime.Second;
+        }
+
+        /// <summary>
+        /// 現在時刻を取得する。
+        /// ミリ秒単位まで取得可能。
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime GetNowTime()
+        {
+            return DateTime.Now;
         }
 
         /// <summary>

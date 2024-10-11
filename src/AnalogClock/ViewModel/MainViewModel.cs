@@ -219,6 +219,13 @@ namespace AnalogClock.ViewModel
             get { return armageddonCoolDownEndTime.ToString("HH:mm:ss"); }
         }
 
+        private Brush[] _coolDownTimeSecondBackground = new Brush[60];
+        public Brush[] CoolDownTimeSecondBackground
+        {
+            get { return this._coolDownTimeSecondBackground; }
+            set { SetProperty(ref _coolDownTimeSecondBackground, value); }
+        }
+
         #endregion
 
         #region Binding用コマンド
@@ -323,6 +330,22 @@ namespace AnalogClock.ViewModel
             }
         }
 
+        /// <summary>
+        /// 【Binding用コマンド】
+        /// クールダウンをリスタートする
+        /// </summary>
+        public ICommand StartCoolDownCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    this.armageddonCoolDownEndTime = DateTime.Now.AddSeconds(ConstantData.COOL_DOWN_TIME_SECOND);
+                    RaisePropertyChanged(nameof(CoolDownEndTime));
+                });
+            }
+        }
+
         // Binding用のプロパティ・コマンドは以上。
 
         #endregion
@@ -355,12 +378,58 @@ namespace AnalogClock.ViewModel
 
             this.timeUpdatingTimer = new DispatcherTimer();
             this.timeUpdatingTimer.Interval = TimeSpan.FromMilliseconds(200);
+            // 時計の針を描画するための関数
             this.timeUpdatingTimer.Tick += (object sender, EventArgs e) =>
             {
                 RaisePropertyChanged(nameof(HourHandAngle));
                 RaisePropertyChanged(nameof(MinuteHandAngle));
                 RaisePropertyChanged(nameof(SecondHandAngle));
                 RaisePropertyChanged(nameof(CoolDownEndTime));
+            };
+            // ハルマゲドンモード時の処理()
+            this.timeUpdatingTimer.Tick += (object sender, EventArgs e) =>
+            {
+                if (this.armageddonMode)
+                {
+                    // 背景に色を付ける残時間
+                    int colorOnRestSeconds = 60;
+
+                    DateTime now = TimeUtility.GetNowTime();
+                    TimeSpan restCoolDownTime = this.armageddonCoolDownEndTime.Subtract(now);
+                    if (restCoolDownTime.TotalMilliseconds <= 0)
+                    {
+                        // クールダウンタイムが終了していた場合
+                        for (int sec = 0; sec < 60; sec++)
+                        {
+                            this.CoolDownTimeSecondBackground[sec] = Brushes.Red;
+                        }
+                    }
+                    else if (restCoolDownTime.TotalMilliseconds <= colorOnRestSeconds * 1000)
+                    {
+                        // 残時間が{colorOnRestSeconds}秒以下の場合
+                        for (int sec = 0; sec < 60; sec++)
+                        {
+                            if (this.armageddonCoolDownEndTime.Second > now.Second &&
+                                    (0 <= sec && sec < now.Second || this.armageddonCoolDownEndTime.Second <= sec && sec < 60)
+                                ||
+                                this.armageddonCoolDownEndTime.Second <= now.Second &&
+                                    (this.armageddonCoolDownEndTime.Second <= sec && sec < now.Second)
+                                ||
+                                this.armageddonCoolDownEndTime.Second == now.Second &&
+                                this.armageddonCoolDownEndTime.Minute == now.Minute && now.Second == sec + 1
+                                )
+                            {
+                                this.CoolDownTimeSecondBackground[sec] = Brushes.Yellow;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int a = 0;
+                        a++;
+                    }
+                    RaisePropertyChanged(nameof(CoolDownTimeSecondBackground));
+                }
             };
             this.timeUpdatingTimer.Start();
 

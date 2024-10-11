@@ -85,7 +85,7 @@
         
         <!-- 残時間刻み背景のスタイル -->
         <Style x:Key="SecondBackground" TargetType="{x:Type Path}">
-            <Setter Property="Fill" Value="#80FFFF00"/>
+            <!--<Setter Property="Fill" Value="#80FFFF00"/>-->
             <Setter Property="StrokeThickness" Value="0"/>
             <Setter Property="Data" Value="M 99,0 99,99 109.51042352,0 Z"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/> <!-- 0～1秒の範囲の三角形を初期位置とするので、時計の中心(0.5,0.5)を基準に回転する -->
@@ -106,6 +106,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Cursor" Value="Arrow"/>
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="FALSE">
                     <Setter Property="Background" Value="#D8DDDDDD"/>
@@ -117,6 +118,12 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="Transparentbutton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#B0DDDDDD"/>
+            <Setter Property="Foreground" Value="#E0000000"/>
+            <Setter Property="Cursor" Value="Arrow"/>
+        </Style>
+        
     </Window.Resources>
 
     <!-- コンテキストメニュー -->
@@ -157,66 +164,66 @@
         <Border Style="{StaticResource ClockFrameBorder}">
             <Grid>
                 <!-- 魔界殲滅戦争モード：残時間刻み背景 -->
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="  0"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="  6"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 12"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 18"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 24"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 30"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 36"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 42"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 48"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 54"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 60"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 66"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 72"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 78"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 84"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 90"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 96"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="102"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="108"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="114"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="120"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="126"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="132"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="138"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="144"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="150"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="156"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="162"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="168"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="174"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="180"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="186"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="192"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="198"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="204"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="210"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="216"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="222"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="228"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="234"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="240"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="246"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="252"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="258"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="264"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="270"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="276"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="282"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="288"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="294"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="300"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="306"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="312"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="318"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="324"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="330"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="336"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="342"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="348"/></TransformGroup></Path.RenderTransform></Path>
-                <Path Style="{StaticResource SecondBackground}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="354"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 0]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="  0"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 1]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="  6"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 2]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 12"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 3]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 18"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 4]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 24"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 5]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 30"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 6]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 36"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 7]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 42"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 8]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 48"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[ 9]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 54"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[10]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 60"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[11]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 66"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[12]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 72"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[13]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 78"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[14]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 84"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[15]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 90"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[16]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle=" 96"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[17]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="102"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[18]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="108"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[19]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="114"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[20]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="120"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[21]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="126"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[22]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="132"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[23]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="138"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[24]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="144"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[25]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="150"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[26]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="156"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[27]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="162"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[28]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="168"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[29]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="174"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[30]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="180"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[31]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="186"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[32]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="192"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[33]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="198"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[34]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="204"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[35]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="210"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[36]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="216"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[37]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="222"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[38]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="228"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[39]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="234"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[40]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="240"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[41]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="246"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[42]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="252"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[43]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="258"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[44]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="264"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[45]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="270"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[46]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="276"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[47]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="282"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[48]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="288"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[49]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="294"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[50]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="300"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[51]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="306"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[52]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="312"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[53]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="318"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[54]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="324"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[55]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="330"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[56]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="336"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[57]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="342"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[58]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="348"/></TransformGroup></Path.RenderTransform></Path>
+                <Path Style="{StaticResource SecondBackground}" Fill="{Binding Path=CoolDownTimeSecondBackground[59]}"><Path.RenderTransform><TransformGroup><RotateTransform Angle="354"/></TransformGroup></Path.RenderTransform></Path>
 
                 <!-- 秒目盛り描画 -->
                 <Rectangle Style="{StaticResource SecondScaleRectangle5}"><Rectangle.RenderTransform><TransformGroup><TranslateTransform Y="{Binding Path=SecondScalePositionOffset5.Y}"/><RotateTransform Angle="{Binding Path=SecondScaleAngleArray[ 0]}"/></TransformGroup></Rectangle.RenderTransform></Rectangle>
@@ -428,7 +435,6 @@
                               Content="ハルマゲドン"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
-                              Cursor="Arrow"
                               Command="{Binding Path=ArmageddonButtonCommand}"/>
                 
                 <!-- ハルマゲドンモード時の表示 -->
@@ -438,16 +444,31 @@
                             Visibility="{Binding ArmageddonModeVisibility}">
                     <StackPanel.RenderTransform>
                         <TransformGroup>
-                            <TranslateTransform Y="27"/>
+                            <TranslateTransform Y="26"/>
                         </TransformGroup>
                     </StackPanel.RenderTransform>
                     <TextBlock Text="クールタイム終了時刻"
+                               FontSize="10.5"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding Path=CoolDownEndTime}"
+                               FontSize="12"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
                 </StackPanel>
+                <Button Style="{StaticResource Transparentbutton}"
+                        Content="クールタイムスタート"
+                        FontSize="11"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding ArmageddonModeVisibility}"
+                        Command="{Binding Path=StartCoolDownCommand}">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-20"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
             </Grid>
         </Border>
     </Grid>

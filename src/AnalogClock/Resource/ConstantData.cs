@@ -78,7 +78,7 @@ namespace AnalogClock.Resource
         /// <summary>
         /// ハルマゲドンのクールダウンタイム(秒)
         /// </summary>
-        public static readonly double COOL_DOWN_TIME_SECOND = 4 * 60 + 55;
+        public static readonly double COOL_DOWN_TIME_SECOND = 65;// 4 * 60 + 55;
 
         /// <summary>
         /// ヘルプの表示文字列
@@ -92,7 +92,7 @@ namespace AnalogClock.Resource
             "　・終了1分前になると文字盤の色が変わる\n" +
             "　・ハルマゲドンボタンが濃ければハルマゲドンモード\n" +
             "\n" + 
-            "商用利用、二次配布を禁止します";
+            "商用利用を禁止します";
 
         /// <summary>
         /// 作成者情報
