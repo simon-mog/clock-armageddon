@@ -12,6 +12,8 @@ namespace AnalogClock.Resource
     /// </summary>
     class ConstantData
     {
+        public static readonly string VERSION = "0.1.0";
+
         /// <summary>
         /// 時計の基本長さ
         /// </summary>
@@ -78,25 +80,45 @@ namespace AnalogClock.Resource
         /// <summary>
         /// ハルマゲドンのクールダウンタイム(秒)
         /// </summary>
-        public static readonly double COOL_DOWN_TIME_SECOND = 65;// 4 * 60 + 55;
+        public static readonly double COOL_DOWN_TIME_SECOND = 4 * 60 + 55;
+
+        /// <summary>
+        /// クールダウンタイムの警告色
+        /// </summary>
+        public static readonly Brush COOL_DOWN_TIME_WARN_BACKGROUND = new SolidColorBrush(Color.FromArgb(0xA0, 0xFF, 0xFF, 0x00));
+
+        /// <summary>
+        /// クールダウンタイムが時間切れになったときの色
+        /// </summary>
+        public static readonly Brush COOL_DOWN_TIME_UP_BACKGROUND = new SolidColorBrush(Color.FromArgb(0x70, 0xFF, 0x00, 0x00));
 
         /// <summary>
         /// ヘルプの表示文字列
         /// </summary>
-        public static readonly string HELP_MESSAGE = "・ハルマゲドンボタン\n" +
-            "　・押すととハルマゲドンモードになる\n" +
-            "　・ハルマゲドンモードのときに押すとハルマゲドンモードを解除する\n" +
+        public static readonly string HELP_MESSAGE = "■使い方\n" +
+            "・ハルマゲドンボタンを押すと、ハルマゲドンモードになります\n" +
+            "・ハルマゲドンモードになると、クールタイム終了時刻を4分55秒後にセットします\n" +
+            "・クールタイム終了時刻の1分前になると、文字盤が徐々に黄色に点滅します\n" +
+            "・クールタイム終了時刻を過ぎると、文字盤全体が赤色に点滅します\n" +
+            "・ハルマゲドンで戦闘を開始したらクールタイムスタートボタンを押してください。クールタイムを再設定します。\n" +
+            "・ハルマゲドンボタンを再度押すとハルマゲドンモードを解除できます\n" +
             "\n" +
-            "・ハルマゲドンモード\n" +
-            "　・4分55秒間隔でタイマーが走る\n" +
-            "　・終了1分前になると文字盤の色が変わる\n" +
-            "　・ハルマゲドンボタンが濃ければハルマゲドンモード\n" +
-            "\n" + 
-            "商用利用を禁止します";
+            "※画面スペースの都合上クールダウンタイムのことをクールタイムと呼んでいます\n" +
+            "\n" +
+            "■補足\n" +
+            "・本アプリケーションの時刻は、システム(=Windows)の時刻と一致しています。カゲマスサーバーの時刻とずれていると感じたら、システムの時刻を修正してください。\n" +
+            "・本アプリケーションの使用によって生じたいかなる損害にも、作成者は一切の責任を負いません。自己責任でご使用ください。\n" +
+            "・ソースコードはGitHubにて公開しています。GitHubアカウントは「作成者」をご参照ください。\n" +
+            "\n" +
+            "■バージョン\n" + VERSION;
 
         /// <summary>
         /// 作成者情報
         /// </summary>
-        internal static readonly string CREATOR_INFO = "Xアカウント: @SimonKagemasu";
+        internal static readonly string CREATOR_INFO = "Xアカウント: @SimonKagemasu\n" +
+            "GitHubアカウント: simon-mog\n" +
+            "\n" +
+            "ご要望があればXアカウントへご連絡ください\n" +
+            "対応するかもしれません";
     }
 }

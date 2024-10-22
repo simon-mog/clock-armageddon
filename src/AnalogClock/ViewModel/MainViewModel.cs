@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace AnalogClock.ViewModel
 {
@@ -320,7 +321,7 @@ namespace AnalogClock.ViewModel
                     else
                     {
                         // ハルマゲドンモードにする
-                        MessageBox.Show("魔界殲滅戦争！");
+                        //MessageBox.Show("魔界殲滅戦争！");
                         this.armageddonCoolDownEndTime = DateTime.Now.AddSeconds(ConstantData.COOL_DOWN_TIME_SECOND);
                         this.armageddonMode = true;
                         RaisePropertyChanged(nameof(CoolDownEndTime));
@@ -340,8 +341,16 @@ namespace AnalogClock.ViewModel
             {
                 return new DelegateCommand(() =>
                 {
+                    // クールダウンタイムの終了時刻を再設定
                     this.armageddonCoolDownEndTime = DateTime.Now.AddSeconds(ConstantData.COOL_DOWN_TIME_SECOND);
                     RaisePropertyChanged(nameof(CoolDownEndTime));
+
+                    // カウントダウンの背景色を初期化
+                    for (int sec = 0; sec < 60; sec++)
+                    {
+                        this.CoolDownTimeSecondBackground[sec] = Brushes.Transparent;
+                    }
+                    RaisePropertyChanged(nameof(CoolDownTimeSecondBackground));
                 });
             }
         }
@@ -377,8 +386,9 @@ namespace AnalogClock.ViewModel
             this.SecondScaleAngleArray = new double[60];
 
             this.timeUpdatingTimer = new DispatcherTimer();
-            this.timeUpdatingTimer.Interval = TimeSpan.FromMilliseconds(200);
+            this.timeUpdatingTimer.Interval = TimeSpan.FromMilliseconds(125);
             // 時計の針を描画するための関数
+            int tickCount = 0;
             this.timeUpdatingTimer.Tick += (object sender, EventArgs e) =>
             {
                 RaisePropertyChanged(nameof(HourHandAngle));
@@ -389,6 +399,7 @@ namespace AnalogClock.ViewModel
             // ハルマゲドンモード時の処理()
             this.timeUpdatingTimer.Tick += (object sender, EventArgs e) =>
             {
+                tickCount++;
                 if (this.armageddonMode)
                 {
                     // 背景に色を付ける残時間
@@ -401,7 +412,14 @@ namespace AnalogClock.ViewModel
                         // クールダウンタイムが終了していた場合
                         for (int sec = 0; sec < 60; sec++)
                         {
-                            this.CoolDownTimeSecondBackground[sec] = Brushes.Red;
+                            if (now.Millisecond <= 510)
+                            {
+                                this.CoolDownTimeSecondBackground[sec] = ConstantData.COOL_DOWN_TIME_UP_BACKGROUND;
+                            }
+                            else
+                            {
+                                this.CoolDownTimeSecondBackground[sec] = Brushes.Transparent;
+                            }
                         }
                     }
                     else if (restCoolDownTime.TotalMilliseconds <= colorOnRestSeconds * 1000)
@@ -419,14 +437,17 @@ namespace AnalogClock.ViewModel
                                 this.armageddonCoolDownEndTime.Minute == now.Minute && now.Second == sec + 1
                                 )
                             {
-                                this.CoolDownTimeSecondBackground[sec] = Brushes.Yellow;
+                                if (now.Millisecond <= 510)
+                                {
+                                    this.CoolDownTimeSecondBackground[sec] = ConstantData.COOL_DOWN_TIME_WARN_BACKGROUND;
+                                }
+                                else
+                                {
+                                    this.CoolDownTimeSecondBackground[sec] = Brushes.Transparent;
+                                }
+                                
                             }
                         }
-                    }
-                    else
-                    {
-                        int a = 0;
-                        a++;
                     }
                     RaisePropertyChanged(nameof(CoolDownTimeSecondBackground));
                 }
